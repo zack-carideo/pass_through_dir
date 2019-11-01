@@ -15,7 +15,7 @@ ELASTIC SEARCH
 #Stores data structures as serialized JSON documents (instead of rows/columns)
 
 #Uses an Inverted index to support full-text searches
- - Inverted Index: lists every unique word that appears in any docuyment and identifies all the documents each word occurs in 
+ - Inverted Index: lists every unique word that appears in any docuyment and    entifies all the documents each word occurs in 
 
 #Ability to use per-field data structures to assemble and return search results
 
@@ -46,7 +46,7 @@ cd C:\Users\zjc10\Desktop\Utils
 Expand-Archive elasticsearch-7.4.1-windows-x86_64.zip
 
 #3.Start Elastic search from bin directory 
-cd elasticsearch-7.4.1\bin 
+cd c:\Users\zjc10\Desktop\Utils\elasticsearch-7.4.1\bin 
 .\elasticsearch.bat
 
 #4.Start 2 more instances of Elasticsaerch to set up a multi-node cluster 
@@ -115,8 +115,20 @@ curl -X GET "localhost:9200/webhose/_search?pretty" -H 'Content-Type: applicatio
 curl -X GET "localhost:9200/webhose/_search?pretty" -H  -d {"query":{"match":{"title": "Nintendo"}}}
 
 
-
-
+###################
+#####KIBANA########
+###################
+#spin up your elastic cluster 3(nodes)
+#By default, Kibana connects to the Elasticsearch instance running on localhost. 
+#By default, Kibana runs in the foreground, prints its logs to STDOUT
+#The Kibana server reads properties from the kibana.yml file on startup. ($KIBANA_HOME/config.)
+#Kibana is hosted on port 5601 (localhost:5601)
+#Kibana Status monitoring: localhost:5601/status
+#FIRST TIME you access kibana, your are prompted to define an index that matches the name of one or more of indices stored in elastic
+#Add Indexes at any time in kibana from the Managment tab 
+#spin up kibanna from cli 
+cd C:\Users\zjc10\Desktop\Utils\kibana*
+.\bin\kibana.bat
 
 
 
