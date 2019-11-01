@@ -1,10 +1,12 @@
 """
 ELASTIC SEARCH 
-
 #CORE COMPONENTS
  - Logstash and Beats facilitate collecting, aggregating, and enriching and storing your data in ElasticSearch
  - kibana : enables you to interactivly explore, visualize, and share insights into your data and monitor the stack
  - Elastic Search: where the indexing, search, and analysis occurs (its the engine/db)
+
+#Links
+#ElasticSearch With Embeddings = https://www.elastic.co/blog/text-similarity-search-with-vectors-in-elasticsearch
 
 ##############
 #Elastic Data Input Structure(documents and indices)
@@ -26,6 +28,9 @@ ELASTIC SEARCH
 #Elastic Data Output Structure (search and analyze)
 ##############
 #Elasticsearch Query DSL provides json like query collecting
+#Index = Database 
+#type = table 
+#mapping tyes are deprecated and no longer used 
 
 ##############
 #Elastic INSTALL 
@@ -68,15 +73,46 @@ curl -X PUT "localhost:9200/customer/_doc/1?pretty" -H 'Content-Type: applicatio
 #GET request that specifies document ID. 
 curl -X GET "localhost:9200/customer/_doc/1?pretty"
 
+#8.Understand Syntax used to upload documents in bulk
+  #NOTE: each record to be uploaded must have a unique _id (it will get automatically generated if not specified)
+  #0. bulk upload syntax format example
+  { "index" : { "_index" : "testindex", "_type" : "somerandomtype", "_id" : "1" } }
+  { "country_name" : "South America","continent":"Africa", "country_abrev":"ZA" }
+
+ #0. generic english syntax of above 
+ { action_to_be_performed: { metadata_related_to_action_performed }}\newline
+ { request_body_usually_data_to_be_indexed        }\newline
+
+ #1.action_to_be_performed
+    {"index":...}
+ #2.the index we ar indeing the data into is "testindex"(database), as long as you specify the index name inthe metadata of the related action to be performed, the index will be created during bulk insert
+    {"_index":"database_name"}
+ #3.specify the type by which the data will be indexed(~type = sql table)
+    {"_index":"database_name","_type":"tablename"}
+ #4.speify the actual data to index into Elastic search (the requeset body)
+    {"fieldname":"value","fieldname2":"value",...}
 
 #8.Indexing documents in bulk (bulk API)
  - Optimal Batch Size: 1000-5000 or a total payload of 5MB-15MB
-
 curl -H "Content-Type: application/json" -XPOST "localhost:9200/webhose/_bulk?pretty&refresh" --data-binary "@accounts.json"
 curl -H "Content-Type: application/x-ndjson" -XPOST "localhost:9200/webhose/_bulk?pretty" --data-binary @C:\\Users\\zjc10\\Desktop\\Projects\\data\\news\\webhose_news\\webhose_elstc.json
-
 curl "localhost:9200/_cat/indices?v"
 
+#9.Show statistics for all indexes in elastic 
+curl -X GET "localhost:9200/webhose/_stats?pretty"
+
+#10.Query documents(results 10 to 20) (from cli)
+curl -X GET "localhost:9200/webhose/_search?pretty" -H 'Content-Type: application/json' -d'
+{
+  "query": { "match_all": {} },
+  "sort": [
+    { "date": "asc" }
+  ],
+  "from": 10,
+  "size": 10
+}
+'
+curl -X GET "localhost:9200/webhose/_search?pretty" -H  -d {"query":{"match":{"title": "Nintendo"}}}
 
 
 
